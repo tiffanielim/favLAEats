@@ -23,75 +23,424 @@
  *
  */
 
-const FRESH_PRINCE_URL =
-  "https://upload.wikimedia.org/wikipedia/en/3/33/Fresh_Prince_S1_DVD.jpg";
-const CURB_POSTER_URL =
-  "https://m.media-amazon.com/images/M/MV5BZDY1ZGM4OGItMWMyNS00MDAyLWE2Y2MtZTFhMTU0MGI5ZDFlXkEyXkFqcGdeQXVyMDc5ODIzMw@@._V1_FMjpg_UX1000_.jpg";
-const EAST_LOS_HIGH_POSTER_URL =
-  "https://static.wikia.nocookie.net/hulu/images/6/64/East_Los_High.jpg";
 
-// This is an array of strings (TV show titles)
-let titles = [
-  "Fresh Prince of Bel Air",
-  "Curb Your Enthusiasm",
-  "East Los High",
+// ----------------------------------------------------
+// ----------------------- DATA -----------------------
+// ----------------------------------------------------
+
+let foodSpots = [
+  {
+    name: "Pasta e Pasta by Allegro",
+    cuisine: "Japanese-Italian",
+    location: "Little Tokyo",
+    price: "$$",
+    bunnyRating: 5,
+    image: "assets/images/pastaEPasta.JPG",
+    tags: ["pasta", "fusion", "uni", "mentai", "asian"]
+  },
+  {
+    name: "Mariscos El Jato",
+    cuisine: "Mexican",
+    location: "East LA",
+    price: "$",
+    bunnyRating: 4.5,
+    image: "assets/images/elJato.jpg",
+    tags: ["tacos", "seafood", "shrimp tacos", "fried tacos"]
+  },
+  {
+    name: "Golden Deli",
+    cuisine: "Vietnamese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4.5,
+    image: "assets/images/GoldenDeli.jpg",
+    tags: ["com tam", "pho", "egg rolls"]
+  },
+  {
+    name: "Mr. Dragon Noodle House",
+    cuisine: "Chinese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4,
+    image: "assets/images/MrDragonNoodleHouseBeefRolls.avif",
+    tags: ["beef rolls", "beef noodle soup", "bao"]
+  },
+  {
+    name: "Mary Lane Cafe",
+    cuisine: "American",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4,
+    image: "assets/images/maryLaneCafe.png",
+    tags: ["brunch", "sandwich", "latte"]
+  },
+  {
+    name: "Avenue 26 Tacos",
+    cuisine: "Mexican",
+    location: "Little Tokyo",
+    price: "$",
+    bunnyRating: 4,
+    image: "assets/images/avenue26Tacos.jpg",
+    tags: ["tacos", "quesadilla", "al pastor", "carne asada", "street food"]
+  },
+  {
+    name: "Seoul Market Eatery",
+    cuisine: "Korean",
+    location: "Koreatown",
+    price: "$",
+    bunnyRating: 4,
+    image: "assets/images/seoulMarketEatery.jpeg",
+    tags: ["cheap", "Korean fried chicken", "tteokbokki", "street food"]
+  },
+  {
+    name: "Carnitas Michoacan",
+    cuisine: "Mexican",
+    location: "Chinatown",
+    price: "$",
+    bunnyRating: 3.5,
+    image: "assets/images/carnitasMichoacanNachos.jpg",
+    tags: ["tacos", "nachos", "al pastor", "carne asada", "street food"]
+  },
 ];
-// Your final submission should have much more data than this, and
-// you should use more than just an array of strings to store it all.
+
+//keeps track of user's current filter selections
+let filters = {
+  cuisine: null,
+  location: null,
+  sortBy: null,
+  sortOrder: null,
+};
+
+// -----------------------------------------------------
+// ------------------ EVENT LISTENERS ------------------
+// -----------------------------------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+  showCards();
+
+  ///for the search bar
+  const searchBar = document.getElementById("search");
+  searchBar.addEventListener("keyup", (e) => {
+    // console.log(e.target.value);
+    const searchString = e.target.value;
+    search(searchString);
+  });
+
+  ///for the dropdown buttons
+  initializeDropdowns();
+});
+
+///toggles mobile hamburger nav bar
+function toggleMenu()
+{
+    console.log("Toggle menu pressed");
+    const menu = document.querySelector(".menuLinks");
+    const icon = document.querySelector(".hamburgerIcon");
+    menu.classList.toggle("open");
+    icon.classList.toggle("open");
+}
+
+// -----------------------------------------------------
+// ------------------- DISPLAY CARDS -------------------
+// -----------------------------------------------------
 
 // This function adds cards the page to display the data in the array
-function showCards() {
+function showCards(spots = foodSpots) //shows all cards without a parameter, if there pass in a filtered list, it will show cards that reflects those filters
+{
   const cardContainer = document.getElementById("card-container");
-  cardContainer.innerHTML = "";
+  cardContainer.innerHTML = ""; //to clear existing content
+
   const templateCard = document.querySelector(".card");
 
-  for (let i = 0; i < titles.length; i++) {
-    let title = titles[i];
-
-    // This part of the code doesn't scale very well! After you add your
-    // own data, you'll need to do something totally different here.
-    let imageURL = "";
-    if (i == 0) {
-      imageURL = FRESH_PRINCE_URL;
-    } else if (i == 1) {
-      imageURL = CURB_POSTER_URL;
-    } else if (i == 2) {
-      imageURL = EAST_LOS_HIGH_POSTER_URL;
-    }
-
+  for (let i = 0; i < spots.length; i++) {
+    const foodSpot = spots[i];
     const nextCard = templateCard.cloneNode(true); // Copy the template card
-    editCardContent(nextCard, title, imageURL); // Edit title and image
+    editCardContent(nextCard, foodSpot); // Edit title and image
     cardContainer.appendChild(nextCard); // Add new card to the container
   }
 }
 
-function editCardContent(card, newTitle, newImageURL) {
+//without this, the card would be blank.
+//basically adds info to the card
+function editCardContent(card, foodSpot){
   card.style.display = "block";
-
-  const cardHeader = card.querySelector("h2");
-  cardHeader.textContent = newTitle;
-
-  const cardImage = card.querySelector("img");
-  cardImage.src = newImageURL;
-  cardImage.alt = newTitle + " Poster";
-
-  // You can use console.log to help you debug!
-  // View the output by right clicking on your website,
-  // select "Inspect", then click on the "Console" tab
-  console.log("new card:", newTitle, "- html: ", card);
+  updateCardImage(card, foodSpot);
+  updateCardText(card, foodSpot);
+  updateCardBunnyRating(card, foodSpot);
 }
 
-// This calls the addCards() function when the page is first loaded
-document.addEventListener("DOMContentLoaded", showCards);
+// ------------------------------------------------------
+// -------------------- CARD CONTENT --------------------
+// ------------------------------------------------------
 
-function quoteAlert() {
-  console.log("Button Clicked!");
-  alert(
-    "I guess I can kiss heaven goodbye, because it got to be a sin to look this good!"
-  );
+function updateCardImage (card, foodSpot)
+{
+  const img = card.querySelector(".image");
+  img.src = foodSpot.image;
+  img.alt = foodSpot.name + " image";
 }
 
-function removeLastCard() {
-  titles.pop(); // Remove last item in titles array
-  showCards(); // Call showCards again to refresh
+function updateCardText(card, foodSpot)
+{
+  //name
+  card.querySelector("h2").textContent = foodSpot.name;
+
+  //cuisine
+  card.querySelector("#cuisine").textContent = "Cuisine: " + foodSpot.cuisine; //can NOT use getElementById inside a nested component (like card) as it always looks at the entire document
+
+  //location
+  card.querySelector("#location").textContent = "Location: " + foodSpot.location;
+
+  //price
+  card.querySelector("#price").textContent = "Price: " + foodSpot.price;
+}
+
+//draws bunny icons based off of my rating :)
+function updateCardBunnyRating(card, foodSpot)
+{
+  let bunnyContainer = card.querySelector(".bunny-rating");
+  bunnyContainer.innerHTML = "";
+
+  let rating = foodSpot.bunnyRating;
+  for (let i = 1; i <= 5; i++)
+  {
+    const img = document.createElement("img");
+    if (rating >= 1) //whole number
+    {
+      img.src = "assets/icons/fullBunnyStar.png"; //full bunny
+      rating -=1; //this is needed because otherwise you're checking for the same thing over and over (resulting in 5 bunnies)
+    }
+    else if (rating == 0.5)
+    {
+      img.src = "assets/icons/halfBunnyStar.png"; //half bunny
+      rating = 0; //becasue at this point, i should have already checked for whole bunnies and half bunnies,so there should be nothing left. i should have nothing left to use
+    }
+    else
+    {
+      img.src = "assets/icons/emptyBunnyStar.png"; //empty bunny
+    }
+
+    img.alt = "bunny rating";
+    img.classList.add("bunny-icon");  //for css
+    bunnyContainer.appendChild(img); //adds the bunny to the container of total bunnies of the rating
+  }
+}
+
+// --------------------------------------------------------
+// --------------------------------------------------------
+// -------------------- SEARCH/SORTING --------------------
+// --------------------------------------------------------
+// --------------------------------------------------------
+
+//the search bar logic
+//if you type anything in the search bar, the function compares your input to food spots that contain name, cuisine, location, price, or tags include the search word.
+function search(searchString)
+{
+  let matches = []; //empty array list for the search function
+  searchString = searchString.toLowerCase();
+
+  for (let i = 0; i < foodSpots.length; i++)
+    {
+      const foodSpot = foodSpots[i];
+
+      nameMatch = foodSpot.name.toLowerCase().includes(searchString);
+      cuisineMatch = foodSpot.cuisine.toLowerCase().includes(searchString);
+      locationMatch = foodSpot.location.toLowerCase().includes(searchString);
+      priceMatch = foodSpot.price.includes(searchString);
+      tagMatch = (foodSpot.tags || []).some(tag => tag.toLowerCase().includes(searchString));
+
+      if (nameMatch || cuisineMatch || locationMatch || priceMatch || tagMatch)
+        matches.push(foodSpot);
+    }
+
+    // console.log(matches);
+    showCards(matches);
+
+}
+
+function bubbleSort(array, key, isLowestFirst = true)
+{
+  arr = [...array]; //clone the array so original isn't mutated
+  console.log(`Bubble sorting by "${key}" (${isLowestFirst ? "Asc" : "Desc"})`);
+  for (let i = 0; i <arr.length-1; i++)
+  {
+    for (let j = 0; j <arr.length-1; j++)
+    {
+      let a = arr[j][key];
+      let b = arr[j+1][key];
+
+      if (key == "price")
+      {
+        a = a.length;
+        b = b.length;
+      }
+
+      if ((isLowestFirst == true && a > b) || (!isLowestFirst == true && a < b )) //if the wrong order 
+      {
+        let temp = arr[j];
+        arr[j] = arr[j+1];
+        arr[j+1] = temp;
+      }
+
+    }
+  }
+  console.log("Sorted results:");
+  arr.forEach((spot, index) => {
+    console.log(`${index + 1}. ${spot.name} - ${spot[key]}`);
+  });
+
+  return arr;
+}
+
+function splitCuisine (cuisineStr)
+{
+  let currentWord = ""; //holds letters as we build words 
+  let parts = []; //stores split words
+  for (let i = 0; i < cuisineStr.length; i++)
+  {
+    const char = cuisineStr[i];
+
+    if(char === '-')
+    {
+      parts.push(currentWord.toLowerCase());
+      currentWord = "";
+    }
+    else
+    {
+      currentWord += char;
+    }
+  }
+
+  if (currentWord.length > 0) //the second word after the loop
+  {
+    parts.push(currentWord.toLowerCase());
+  }
+
+    return parts;
+}
+
+function applyFilters()
+{
+  let results = []; //empty array that holds onto the foodSpots i'm passing
+
+  for (let i = 0; i < foodSpots.length; i++)
+  {
+    const foodSpot = foodSpots[i];
+
+    //skip this food spot if it doesn't match the selected cuisine
+    if (!matchesCuisine(foodSpot))
+      continue;
+
+    //skip this food spot if it doesn't match the selected location
+    if (!matchesLocation(foodSpot))
+      continue;
+
+    results.push(foodSpot); //as it's passed all the above filters alr
+  }
+
+  //if the user chose a sort by option
+  if (filters.sortBy !== null) //if null was chosen, options will not be sorted
+  {
+      const sortKey = filters.sortBy; //whatver user chose to sort by is saved into sortKey
+      const isAscending = filters.sortOrder === "asc"; //check if it should be ascending (if so we will sort accordining). isAscending == true/false
+      console.log("Sorting by:", sortKey, "Ascending?", isAscending);
+      results = bubbleSort(results, sortKey, isAscending);
+  }
+  showCards(results);
+  console.log("showCards called with", results.length, "spots");
+}
+
+
+function matchesCuisine(foodSpot)
+{
+  if (filters.cuisine == null) //meaning view all cuisines
+    return true;
+
+  const cuisineParts = splitCuisine(foodSpot.cuisine.toLowerCase()); //breaks up a work if it has a dash like "Japanese-Italian"
+  const isFusion = foodSpot.cuisine.includes("-"); //checks if the cuisine contains a dash
+
+  if(cuisineParts.includes(filters.cuisine.toLowerCase()) || filters.cuisine.toLowerCase() === "fusion" && isFusion)
+  {
+    return true;
+  }
+
+  return false;
+}
+
+function matchesLocation(foodSpot)
+{
+  if(filters.location === null) //meaning view all locations
+    return true;
+
+  if (foodSpot.location.toLowerCase() === filters.location.toLowerCase())
+  {
+    return true;
+  }
+
+  return false;
+}
+
+// --------------------------------------------------------
+// ----------------------- DROPDOWN -----------------------
+// --------------------------------------------------------
+
+function initializeDropdowns() {
+  const dropdowns = document.querySelectorAll('.dropdown');
+  console.log("Dropdown count:", dropdowns.length);
+
+  dropdowns.forEach(dropdown => setupDropdown(dropdown));
+}
+
+function setupDropdown(dropdown) {
+  const select = dropdown.querySelector('.select');
+  const caret = dropdown.querySelector('.caret');
+  const menu = dropdown.querySelector('.menu');
+  const options = dropdown.querySelectorAll('.menu li');
+  const selected = dropdown.querySelector('.selected');
+
+  console.log("Attaching click to:", select);
+  select.addEventListener('click', () => toggleDropdown(select, caret, menu));
+
+  options.forEach(option => {
+    option.addEventListener('click', () => {
+      handleOptionClick(dropdown, option, select, caret, menu, options, selected);
+    });
+  });
+}
+
+//toggles the dropdown when you click the active/top dropdown cover
+function toggleDropdown(select, caret, menu) {
+  console.log("Dropdown was clicked");
+  select.classList.toggle('select-clicked');
+  caret.classList.toggle('caret-rotate');
+  menu.classList.toggle('menu-open');
+}
+
+function handleOptionClick(dropdown, option, select, caret, menu, options, selected) {
+  selected.innerText = option.innerText;
+
+  //close dropdown
+  select.classList.remove('select-clicked');
+  caret.classList.remove('caret-rotate');
+  menu.classList.remove('menu-open');
+  options.forEach(opt => opt.classList.remove('active'));
+  option.classList.add('active');
+
+  //update filters
+  const type = dropdown.dataset.type;
+  const value = option.dataset.value;
+
+  if (type === "cuisine")
+  {
+    filters.cuisine = value || null;
+  } else if (type === "location")
+  {
+    filters.location = value || null;
+  } else if (type === "sort")
+  {
+    filters.sortBy = option.dataset.sortKey || null;
+    filters.sortOrder = option.dataset.sortOrder || null;
+  }
+
+  applyFilters();
 }

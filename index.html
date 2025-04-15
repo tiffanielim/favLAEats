@@ -1,31 +1,123 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>LA TV Shows | Home</title>
-    <meta name="description" content="A Catalog of Shows Set in Los Angeles" />
+    <title>Tiffanie's Favorite LA Eats | Home</title>
+    <meta name="description" content="A Catalog of Tiffanie's Favorite Food Spots in LA" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="mediaQueries.css" />
     <script type="text/javascript" src="scripts.js"></script>
   </head>
 
   <body>
-    <header class="main-header">
-      <h1 class="title">LA TV Shows</h1>
-    </header>
+    <nav id = "desktopNav">
+      <div class ="logo-title-wrapper">
+      <img class = "logo" src="assets/icons/favLACatalogLogo.png" alt="Bunny bao logo">
+        <h3 class = "title">My Fav LA Eats</h3>
+      </div>
+      <ul class = "nav-links">
+        <li><a href="#catalog">Catalog</a></li>
+        <li><a href="#mustTry">Must Try</a></li>
+        <li><a href="#surpriseMe">Surprise Me</a></li>
+      </ul>
+    </nav>
+
+    <nav id = "hamburgerNav">
+      <div id = "hamburgerNavWrapper">
+      <div class ="logo-title-wrapper">
+        <img class = "logo" src="assets/icons/favLACatalogLogo.png" alt="Bunny bao logo">
+          <h3 class = "title">My Fav LA Eats</h3>
+        </div>
+      <div class = "hamburgerMenu">
+        <div class = "hamburgerIcon" onclick = "toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+  
+        <div class = "menuLinks">
+          <li><a href="#catalog">Catalog</a></li>
+          <li><a href="#mustTry">Must Try</a></li>
+          <li><a href="#surpriseMe">Surprise Me</a></li>
+        </div>
+      </div>
+      </div>
+    </nav>
+
+    <section class = "sort-wrapper">
+    <div class = "search-wrapper">
+      <input type="search" id = "search" placeholder="Search">
+    </div>
+
+    <div class="dropdownButtons">
+
+    <div class = "dropdown" data-type="cuisine">
+      <div class = "select">
+        <span class = "selected">Cuisine</span>
+        <div class = "caret"></div>
+      </div>
+      <ul class="menu">
+        <li class="active" data-value="">Cuisine</li>
+        <li data-value="American">American</li>
+        <li data-value="Chinese">Chinese</li>
+        <li data-value="Mexican">Mexican</li>
+        <li data-value="Japanese">Japanese</li>
+        <li data-value="Italian">Italian</li>
+        <li data-value="Fusion">Fusion</li>
+      </ul>
+    </div>
+
+    <div class = "dropdown" data-type="location">
+      <div class = "select">
+        <span class = "selected">Location</span>
+        <div class = "caret"></div>
+      </div>
+      <ul class = "menu">
+        <li class="active" data-value="">Location</li>
+        <li data-value="East LA">East LA</li>
+        <li data-value="Little Tokyo">Little Tokyo</li>
+        <li data-value="Koreatown">Koreatown</li>
+        <li data-value="626">626</li>
+      </ul>
+    </div>
+
+    <div class = "dropdown" data-type="sort">
+      <div class = "select">
+        <span class = "selected">Sort By</span>
+        <div class = "caret"></div>
+      </div>
+      <ul class = "menu">
+        <li class="active" data-value="">Sort By</li>
+        <li data-sort-key="price" data-sort-order="asc">Price: Low to High</li>
+        <li data-sort-key="price" data-sort-order="desc">Price: High to Low</li>
+        <li data-sort-key="bunnyRating" data-sort-order="asc">Rating: Low to High</li>
+        <li data-sort-key="bunnyRating" data-sort-order="desc">Rating: High to Low</li>
+        <li data-sort-key="name" data-sort-order="asc">A-Z ⇅</li>
+        <li data-sort-key="name" data-sort-order="desc">Z-A ⇅</li>
+      </ul>
+    </div>
+  </div>
+  </section>
+
+    <section id = "catalog">
+
     <div id="card-container"></div>
     <div class="card" style="display: none">
+      <div class = "card-image">
+        <img class="image" src="" alt="Main dish" />
+      </div>
       <div class="card-content">
-        <h2>TV Show Title</h2>
-        <img src="" alt="TV Show Poster" />
+        <h2>Food Spot Name</h2>
         <ul>
-          <li>Bullet Point 1</li>
-          <li>Bullet Point 2</li>
-          <li>Bullet Point 3</li>
+          <li id = "cuisine">Cuisine</li>
+          <li id = "location">Location</li>
+          <li id = "price">Price</li>
+          <li>
+            <span class = "bunny-rating"></span>
+          </li>
         </ul>
       </div>
     </div>
-    <div class="footer">
-      <button onclick="quoteAlert();">Get A Quote!</button>
-      <button onclick="removeLastCard();">Remove A Card!</button>
-    </div>
+
+  </section>
   </body>
 </html>
