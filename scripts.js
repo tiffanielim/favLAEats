@@ -150,7 +150,6 @@ let foodSpots = [
     image: "assets/images/formosaAroma.jpeg",
     tags: ["boba", "drinks", "beverage", "milk tea", "tea"]
   },
-
   {
     name: "Okayama Kobo Bakery & Cafe",
     cuisine: "Japanese",
@@ -196,7 +195,6 @@ let foodSpots = [
     image: "assets/images/kimKeeNoodleHouse.jpg",
     tags: ["clean", "comfort food", "noodles", "chiu chow", "teochew", "youtiao"]
   },
-
   {
     name: "Killer Noodle",
     cuisine: "Japanese",
@@ -222,7 +220,7 @@ let foodSpots = [
     price: "$",
     bunnyRating: 4,
     image: "assets/images/bSweet.avif",
-    tags: ["dessert", "ube", "ice cream", "donuts"]
+    tags: ["dessert", "ube", "ice cream", "donuts", "soft serve"]
   },
   {
     name: "Tea Master Matcha Cafe and Green Tea Shop",
@@ -231,7 +229,7 @@ let foodSpots = [
     price: "$",
     bunnyRating: 4,
     image: "assets/images/teaMaster.jpg",
-    tags: ["matcha", "beverage", "drink", "ice cream", "soft serve"]
+    tags: ["matcha", "beverage", "drink", "ice cream", "soft serve", "dessert"]
   },
   {
     name: "Anju House",
