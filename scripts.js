@@ -87,6 +87,234 @@ let foodSpots = [
     image: "assets/images/carnitasMichoacanNachos.jpg",
     tags: ["tacos", "nachos", "al pastor", "carne asada", "street food"]
   },
+  {
+    name: "Borneo Eatery",
+    cuisine: "Indonesian",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4.5,
+    image: "assets/images/borneoEatery.avif",
+    tags: ["noodles", "skewers", "curry", "roti", "laksa", "satay"]
+  },
+  {
+    name: "Kyoto Gyukatsu",
+    cuisine: "Japanese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 3.5,
+    image: "assets/images/KyotoGyukatsu .jpg",
+    tags: ["sushi", "curry", "udon", "gyukatsu"]
+  },
+  {
+    name: "Ramen Nagi",
+    cuisine: "Japanese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4.5,
+    image: "assets/images/ramenNagi.avif",
+    tags: ["ramen", "rice bowl", "fried chicken", "karaage"]
+  },
+  {
+    name: "Five Star Seafood Restaurant",
+    cuisine: "Chinese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4,
+    image: "assets/images/fiveStarSeafood.jpg",
+    tags: ["dim sum", "chinese banquet", "shumai", "cheung fun"]
+  },
+  {
+    name: "Pepper Lunch",
+    cuisine: "Japanese",
+    location: "626",
+    price: "$",
+    bunnyRating: 4,
+    image: "assets/images/pepperLunch.jpg",
+    tags: ["hot plate", "beef", "curry", "simple"]
+  },
+  {
+    name: "Summer Rolls",
+    cuisine: "Vietnamese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 5,
+    image: "assets/images/summerRolls.jpg",
+    tags: ["spring rolls", "pho", "banh xeo"]
+  },
+  {
+    name: "Formosa Aroma",
+    cuisine: "Taiwanese",
+    location: "626",
+    price: "$$$",
+    bunnyRating: 4,
+    image: "assets/images/formosaAroma.jpeg",
+    tags: ["boba", "drinks", "beverage", "milk tea", "tea"]
+  },
+
+  {
+    name: "Okayama Kobo Bakery & Cafe",
+    cuisine: "Japanese",
+    location: "Little Tokyo",
+    price: "$$",
+    bunnyRating: 4.5,
+    image: "assets/images/okayama.jpg",
+    tags: ["matcha", "drinks", "beverage", "buns", "bread"]
+  },
+  {
+    name: "Wushiland",
+    cuisine: "Taiwanese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4.5,
+    image: "assets/images/wushiland.jpg",
+    tags: ["boba", "drinks", "beverage", "milk tea", "tea"]
+  },
+  {
+    name: "Odd One Out Tea",
+    cuisine: "Taiwanese",
+    location: "Pasadena",
+    price: "$$$",
+    bunnyRating: 4,
+    image: "assets/images/oddOneOut1.jpg",
+    tags: ["boba", "drinks", "beverage", "milk tea", "tea", "fruit tea"]
+  },
+  {
+    name: "Dai Ho Restaurant",
+    cuisine: "Taiwanese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4,
+    image: "assets/images/daiHo.jpg",
+    tags: ["beef noodle soup"]
+  },
+  {
+    name: "Kim Kee Noodle House",
+    cuisine: "Chinese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4.5,
+    image: "assets/images/kimKeeNoodleHouse.jpg",
+    tags: ["clean", "comfort food", "noodles", "chiu chow", "teochew", "youtiao"]
+  },
+
+  {
+    name: "Killer Noodle",
+    cuisine: "Japanese",
+    location: "Sawtelle",
+    price: "$$",
+    bunnyRating: 3.5,
+    image: "assets/images/killerNoodle.jpg",
+    tags: ["ramen", "peanut noodles", "karaage"]
+  },
+  {
+    name: "Gindaco Highball Sakaba",
+    cuisine: "Japanese",
+    location: "Sawtelle",
+    price: "$$$",
+    bunnyRating: 5,
+    image: "assets/images/Gindaco.jpg",
+    tags: ["takoyaki", "sushi", "hand roll"]
+  },
+  {
+    name: "B Sweet Dessert Bar",
+    cuisine: "American",
+    location: "Sawtelle",
+    price: "$",
+    bunnyRating: 4,
+    image: "assets/images/bSweet.avif",
+    tags: ["dessert", "ube", "ice cream", "donuts"]
+  },
+  {
+    name: "Tea Master Matcha Cafe and Green Tea Shop",
+    cuisine: "Japanese",
+    location: "Little Tokyo",
+    price: "$",
+    bunnyRating: 4,
+    image: "assets/images/teaMaster.jpg",
+    tags: ["matcha", "beverage", "drink", "ice cream", "soft serve"]
+  },
+  {
+    name: "Anju House",
+    cuisine: "Korean-Fusion",
+    location: "Koreatown",
+    price: "$$",
+    bunnyRating: 4,
+    image: "assets/images/anjuHouse.jpg",
+    tags: ["tapas", "kimchi bacon pasta", "fusion", "open late", "tteokbokki"]
+  },
+  {
+    name: "YUP DDUK LA",
+    cuisine: "Korean",
+    location: "Koreatown",
+    price: "$$",
+    bunnyRating: 4.5,
+    image: "assets/images/YUPDDUKLA.jpeg",
+    tags: ["tteokbokki"]
+  },
+  {
+    name: "Zzamong",
+    cuisine: "Korean-Chinese",
+    location: "Koreatown",
+    price: "$$",
+    bunnyRating: 4.5,
+    image: "assets/images/zzamong.png",
+    tags: ["jjajangmyeon"]
+  },
+  {
+    name: "Hangari Kalguksu",
+    cuisine: "Korean",
+    location: "Koreatown",
+    price: "$$",
+    bunnyRating: 5,
+    image: "assets/images/hangari.png",
+    tags: ["bossam", "bibimbap", "cold noodles"]
+  },
+  {
+    name: "Ruen Pair",
+    cuisine: "Thai",
+    location: "Hollywood",
+    price: "$$",
+    bunnyRating: 5,
+    image: "assets/images/ruenPair.jpg",
+    tags: ["papaya salad", "pad thai", "tom yum soup", "curry", "shrimp cake", "thai tea"]
+  },
+  {
+    name: "Quarters Korean BBQ",
+    cuisine: "Korean",
+    location: "Koreatown",
+    price: "$$",
+    bunnyRating: 5,
+    image: "assets/images/quarters.avif",
+    tags: ["kbbq", "beef", "pork belly", "pork jowl"]
+  },
+  {
+    name: "Yunchun",
+    cuisine: "Korean",
+    location: "Koreatown",
+    price: "$$",
+    bunnyRating: 5,
+    image: "assets/images/yunchun.jpg",
+    tags: ["kimchi", "soup", "cold noodles", "tofu soup"]
+  },
+  {
+    name: "Young Dong Restaurant",
+    cuisine: "Korean",
+    location: "Koreatown",
+    price: "$$",
+    bunnyRating: 5,
+    image: "assets/images/youngDong.jpg",
+    tags: ["comfort food", "soup", "sul lung tang"]
+  },
+  {
+    name: "Luscious Dumplings",
+    cuisine: "Chinese",
+    location: "626",
+    price: "$$",
+    bunnyRating: 4.5,
+    image: "assets/images/LusciousDumplings.jpg",
+    tags: ["dumplings", "michelen", "soup"]
+  },
+
 ];
 
 //keeps track of user's current filter selections
