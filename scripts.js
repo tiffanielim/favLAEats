@@ -1,32 +1,18 @@
 /**
  * Data Catalog Project Starter Code - SEA Stage 2
- *
- * This file is where you should be doing most of your work. You should
- * also make changes to the HTML and CSS files, but we want you to prioritize
- * demonstrating your understanding of data structures, and you'll do that
- * with the JavaScript code you write in this file.
- *
- * The comments in this file are only to help you learn how the starter code
- * works. The instructions for the project are in the README. That said, here
- * are the three things you should do first to learn about the starter code:
- * - 1 - Change something small in index.html or style.css, then reload your
- *    browser and make sure you can see that change.
- * - 2 - On your browser, right click anywhere on the page and select
- *    "Inspect" to open the browser developer tools. Then, go to the "console"
- *    tab in the new window that opened up. This console is where you will see
- *    JavaScript errors and logs, which is extremely helpful for debugging.
- *    (These instructions assume you're using Chrome, opening developer tools
- *    may be different on other browsers. We suggest using Chrome.)
- * - 3 - Add another string to the titles array a few lines down. Reload your
- *    browser and observe what happens. You should see a fourth "card" appear
- *    with the string you added to the array, but a broken image.
- *
  */
 
-
+// ----------------------------------------------------
 // ----------------------------------------------------
 // ----------------------- DATA -----------------------
 // ----------------------------------------------------
+// ----------------------------------------------------
+
+// Role: contains the main array of food spot objects
+// AND the empty array that tracks a user's filter options
+
+// Each object includes info like name, cuisine, location, price, rating(my bunnyRating lol), image, and tags.
+// These objects will then be dynamically rendered into cards and filtered.
 
 let foodSpots = [
   {
@@ -105,29 +91,41 @@ let foodSpots = [
 
 //keeps track of user's current filter selections
 let filters = {
+  name: null,
   cuisine: null,
   location: null,
   sortBy: null,
   sortOrder: null,
+  //tags is not needed here because i'm already checking for that in the matchesSearch() function
 };
 
+// ----------------------------------------------------
 // -----------------------------------------------------
 // ------------------ EVENT LISTENERS ------------------
 // -----------------------------------------------------
+// ----------------------------------------------------
+// This video helped me understand event listeners better:
+// - https://youtu.be/YiOlaiscqDY?si=6n6MZ7MIj84G-KIF 
 
-document.addEventListener("DOMContentLoaded", () => {
+// Role: sets up initial event listeners when the page loads:
+// - initializes search bar
+// - initializes dropdown filter logic
+// - initializes randomizer (aka the surpriseMe)
+// - shows all cards by default so it's loaded in once the user clicks the page
+
+document.addEventListener("DOMContentLoaded", () =>
+  {
   showCards();
 
   ///for the search bar
-  const searchBar = document.getElementById("search");
-  searchBar.addEventListener("keyup", (e) => {
-    // console.log(e.target.value);
-    const searchString = e.target.value;
-    search(searchString);
-  });
+  initializeSearchBar();
 
   ///for the dropdown buttons
   initializeDropdowns();
+
+  //for the surprise me section
+  initializeRandomizer()
+  
 });
 
 ///toggles mobile hamburger nav bar
@@ -141,14 +139,33 @@ function toggleMenu()
 }
 
 // -----------------------------------------------------
+// -----------------------------------------------------
 // ------------------- DISPLAY CARDS -------------------
 // -----------------------------------------------------
+// -----------------------------------------------------
 
-// This function adds cards the page to display the data in the array
-function showCards(spots = foodSpots) //shows all cards without a parameter, if there pass in a filtered list, it will show cards that reflects those filters
+// Role: creating and displaying cards on the page.
+// - showCards() handles the actual display of the passed array (filtered or not)
+// - editCardContent() updates each card's text, image, and rating based on foodSpots array
+
+
+//shows all cards without a parameter,
+// AND if you pass in a filtered list, it will show cards that reflects those filters
+function showCards(spots = foodSpots)
 {
   const cardContainer = document.getElementById("card-container");
-  cardContainer.innerHTML = ""; //to clear existing content
+  const noResultsMessage = document.getElementById("noResultsMessage");
+  cardContainer.innerHTML = ""; //to clear existing content so there's no overlap
+
+  if (spots.length === 0)
+  {
+    console.log("No results were found");
+    noResultsMessage.style.display = "block";
+    return;
+  } else
+  {
+    noResultsMessage.style.display = "none";
+  }
 
   const templateCard = document.querySelector(".card");
 
@@ -162,7 +179,8 @@ function showCards(spots = foodSpots) //shows all cards without a parameter, if 
 
 //without this, the card would be blank.
 //basically adds info to the card
-function editCardContent(card, foodSpot){
+function editCardContent(card, foodSpot)
+{
   card.style.display = "block";
   updateCardImage(card, foodSpot);
   updateCardText(card, foodSpot);
@@ -172,6 +190,12 @@ function editCardContent(card, foodSpot){
 // ------------------------------------------------------
 // -------------------- CARD CONTENT --------------------
 // ------------------------------------------------------
+// This helped me figure out how to access specific elements from my document(index.html) to use JS:
+// - https://youtu.be/HlIxeXxSD4I?si=WJLAOu3SvL6dTwCr
+
+// Role: updates individual parts of a card
+// - updateCardImage(), updateCardText(), and updateCardBunnyRating()
+//   work together to fill the cards based on a foodSpot object's data
 
 function updateCardImage (card, foodSpot)
 {
@@ -228,35 +252,65 @@ function updateCardBunnyRating(card, foodSpot)
 
 // --------------------------------------------------------
 // --------------------------------------------------------
-// -------------------- SEARCH/SORTING --------------------
+// ------------------------ SORTING -----------------------
 // --------------------------------------------------------
 // --------------------------------------------------------
+
+// Role: controls how the data is filtered and searched
+
+// --------------------------------------------------------
+// ------------------------- SEARCH -----------------------
+// --------------------------------------------------------
+// This video helped me get started, but I eventually branched off on my own:
+// - https://youtu.be/wxz5vJ1BWrc?si=DLPpIUfNc8mahkRT
+
+// Role: search() filters based on keyword matches in name, tags, etc.
+// - initializeSearchBar() for event handling
+// - matchesSearch(foodSpot) search bar logic, works with the filtering system so you can search through filtered options
+
+function initializeSearchBar() {
+  const searchBar = document.getElementById("search");
+  searchBar.addEventListener("keyup", (e) => {
+    // console.log(e.target.value);
+    filters.name = e.target.value;
+    // search(searchString); //because we're applying the search bar to all the other filters as well
+    applyFilters();
+  });
+}
 
 //the search bar logic
-//if you type anything in the search bar, the function compares your input to food spots that contain name, cuisine, location, price, or tags include the search word.
-function search(searchString)
+//if you type anything in the search bar, the function compares your input to food spots that contain name,
+// cuisine, location, price, or tags include the search word.
+function matchesSearch(foodSpot)
 {
-  let matches = []; //empty array list for the search function
-  searchString = searchString.toLowerCase();
+  if (filters.name === null || filters.name.trim() === "")
+    return true;
 
-  for (let i = 0; i < foodSpots.length; i++)
-    {
-      const foodSpot = foodSpots[i];
+  const searchString = filters.name.toLowerCase();
 
-      nameMatch = foodSpot.name.toLowerCase().includes(searchString);
-      cuisineMatch = foodSpot.cuisine.toLowerCase().includes(searchString);
-      locationMatch = foodSpot.location.toLowerCase().includes(searchString);
-      priceMatch = foodSpot.price.includes(searchString);
-      tagMatch = (foodSpot.tags || []).some(tag => tag.toLowerCase().includes(searchString));
+  const nameMatch = foodSpot.name.toLowerCase().includes(searchString);
+  const cuisineMatch = foodSpot.cuisine.toLowerCase().includes(searchString);
+  const locationMatch = foodSpot.location.toLowerCase().includes(searchString);
+  const priceMatch = foodSpot.price.includes(searchString);
+  const tagMatch = (foodSpot.tags || []).some(tag => tag.toLowerCase().includes(searchString));
 
-      if (nameMatch || cuisineMatch || locationMatch || priceMatch || tagMatch)
-        matches.push(foodSpot);
-    }
-
-    // console.log(matches);
-    showCards(matches);
-
+  return nameMatch || cuisineMatch || locationMatch || priceMatch || tagMatch;
 }
+
+// ---------------------------------------------------------
+// --------------------- SORTING HELPERS -------------------
+// ---------------------------------------------------------
+
+// Role: helper functions that help with sorting
+// - bubbleSort() sorts the array by a key (e.g., price, rating, name)
+// - splitCuisine() takes in a string (like Japanese-Italian) and splits it based off of the dash,
+//   needed for fusion restaurants
+// - matchesCuisine(foodSpot) check for cuisines that match what the user chose on the dropdown
+// - matchesLocation(foodSpot) check for locations that match what the user chose on the dropdown
+// - applyFilters() combines dropdown filter logic and sort logic
+
+// applyFilters uses:
+// - matchesCuisine(foodSpot) && matchesLocation(foodSpot) to check for cuisines and locations that match what the user chose on the dropdown
 
 function bubbleSort(array, key, isLowestFirst = true)
 {
@@ -271,12 +325,13 @@ function bubbleSort(array, key, isLowestFirst = true)
 
       if (key == "price")
       {
-        a = a.length;
+        a = a.length; //because of $, $$, $$$
         b = b.length;
       }
 
-      if ((isLowestFirst == true && a > b) || (!isLowestFirst == true && a < b )) //if the wrong order 
+      if ((isLowestFirst == true && a > b) || (!isLowestFirst == true && a < b )) //if choosing desc
       {
+        //swap if it's wrong order
         let temp = arr[j];
         arr[j] = arr[j+1];
         arr[j+1] = temp;
@@ -319,38 +374,6 @@ function splitCuisine (cuisineStr)
     return parts;
 }
 
-function applyFilters()
-{
-  let results = []; //empty array that holds onto the foodSpots i'm passing
-
-  for (let i = 0; i < foodSpots.length; i++)
-  {
-    const foodSpot = foodSpots[i];
-
-    //skip this food spot if it doesn't match the selected cuisine
-    if (!matchesCuisine(foodSpot))
-      continue;
-
-    //skip this food spot if it doesn't match the selected location
-    if (!matchesLocation(foodSpot))
-      continue;
-
-    results.push(foodSpot); //as it's passed all the above filters alr
-  }
-
-  //if the user chose a sort by option
-  if (filters.sortBy !== null) //if null was chosen, options will not be sorted
-  {
-      const sortKey = filters.sortBy; //whatver user chose to sort by is saved into sortKey
-      const isAscending = filters.sortOrder === "asc"; //check if it should be ascending (if so we will sort accordining). isAscending == true/false
-      console.log("Sorting by:", sortKey, "Ascending?", isAscending);
-      results = bubbleSort(results, sortKey, isAscending);
-  }
-  showCards(results);
-  console.log("showCards called with", results.length, "spots");
-}
-
-
 function matchesCuisine(foodSpot)
 {
   if (filters.cuisine == null) //meaning view all cuisines
@@ -380,18 +403,61 @@ function matchesLocation(foodSpot)
   return false;
 }
 
+function applyFilters()
+{
+  let results = []; //empty array that holds onto the foodSpots i'm passing
+
+  for (let i = 0; i < foodSpots.length; i++)
+  {
+    const foodSpot = foodSpots[i];
+
+    //skip this food spot if it doesn't match the selected cuisine
+    if (!matchesCuisine(foodSpot))
+      continue;
+
+    //skip this food spot if it doesn't match the selected location
+    if (!matchesLocation(foodSpot))
+      continue;
+
+    if (!matchesSearch(foodSpot))
+      continue;
+
+    results.push(foodSpot); //as it's passed all the above filters alr, push it into my matches
+  }
+
+  //if the user chose a sort by option
+  if (filters.sortBy !== null) //if null was chosen, options will not be sorted
+  {
+      const sortKey = filters.sortBy; //whatver user chose to sort by is saved into sortKey
+      const isAscending = filters.sortOrder === "asc"; //check if it should be ascending (if so we will sort accordining). isAscending == true/false
+      console.log("Sorting by:", sortKey, "Ascending?", isAscending);
+      results = bubbleSort(results, sortKey, isAscending);
+  }
+  showCards(results);
+  console.log("showCards called with", results.length, "spots");
+}
+
+
 // --------------------------------------------------------
 // ----------------------- DROPDOWN -----------------------
 // --------------------------------------------------------
+// This video was incredibly helpful:
+// - https://youtu.be/hBbrGFCszU4?si=ip7GRhuIZXZkYYpg
 
-function initializeDropdowns() {
+// Role: handles dropdown interface and adjusts filter array to filter for for Cuisine, Location, and Sort By
+// - initializeDropdowns() attaches interactivity to each dropdown
+// - handleOptionClick() updates the filters array (from the very beginning) and reapplies filtering
+
+function initializeDropdowns()
+{
   const dropdowns = document.querySelectorAll('.dropdown');
   console.log("Dropdown count:", dropdowns.length);
 
   dropdowns.forEach(dropdown => setupDropdown(dropdown));
 }
 
-function setupDropdown(dropdown) {
+function setupDropdown(dropdown)
+{
   const select = dropdown.querySelector('.select');
   const caret = dropdown.querySelector('.caret');
   const menu = dropdown.querySelector('.menu');
@@ -409,14 +475,16 @@ function setupDropdown(dropdown) {
 }
 
 //toggles the dropdown when you click the active/top dropdown cover
-function toggleDropdown(select, caret, menu) {
+function toggleDropdown(select, caret, menu)
+{
   console.log("Dropdown was clicked");
   select.classList.toggle('select-clicked');
   caret.classList.toggle('caret-rotate');
   menu.classList.toggle('menu-open');
 }
 
-function handleOptionClick(dropdown, option, select, caret, menu, options, selected) {
+function handleOptionClick(dropdown, option, select, caret, menu, options, selected)
+{
   selected.innerText = option.innerText;
 
   //close dropdown
@@ -443,4 +511,48 @@ function handleOptionClick(dropdown, option, select, caret, menu, options, selec
   }
 
   applyFilters();
+}
+
+
+// --------------------------------------------------------
+// --------------------------------------------------------
+// ---------------------- SURPRISE ME ---------------------
+// --------------------------------------------------------
+// --------------------------------------------------------
+
+// Role: handles the “Surprise Me” plate spinner feature:
+// - randomizeFoodSpot() chooses a random foodSpot, spins the plate, and replaces it with a card
+// - createCardFromData() clones the card template and populates it with the chosen data
+// - initializeRandomizer() for event listener
+
+function randomizeFoodSpot() {
+  console.log("Clicked the plate");
+  const plateWrapper = document.querySelector(".plate-wrapper");
+  const randomizer = document.querySelector(".randomizer");
+  const tryText = document.getElementById("tryText");
+
+  const randomIndex = Math.floor(Math.random() * foodSpots.length);
+  const randomSpot = foodSpots[randomIndex];
+
+  plateWrapper.classList.add("spin-animation");
+
+  setTimeout(() => {
+    tryText.textContent = "Try...";
+    const newCard = createCardFromData(randomSpot);
+    randomizer.replaceChild(newCard, plateWrapper);
+  }, 1000);
+}
+
+function createCardFromData(foodSpot) {
+  const templateCard = document.querySelector(".card");
+  const newCard = templateCard.cloneNode(true);
+  newCard.style.display = "block";
+  editCardContent(newCard, foodSpot);
+  return newCard;
+}
+
+function initializeRandomizer() {
+  console.log("Attaching click to: plate-wrapper");
+  document.querySelector(".plate-wrapper").addEventListener('click', () =>
+    randomizeFoodSpot());
 }
