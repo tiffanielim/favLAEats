@@ -28,6 +28,8 @@ Visit the site here:
 ## 🎨 Figma Mockups
 
 I created the interface in Figma first to guide the structure and styling of the site.
+![figmaMockUps](https://github.com/user-attachments/assets/e8bab30c-dfb7-44f4-95d5-ed9db6701e6a)
+
 
 ## 📚 Resources
 
